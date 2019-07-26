@@ -10,6 +10,8 @@ namespace Illuminatech\OverrideBuild;
 /**
  * PatchContract defines interface for the file content patches.
  *
+ * @see \Illuminatech\OverrideBuild\Builder::patchFiles()
+ *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
  */

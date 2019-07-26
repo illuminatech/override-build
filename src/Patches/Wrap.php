@@ -11,7 +11,7 @@ use Illuminatech\OverrideBuild\PatchContract;
 use Illuminatech\ArrayFactory\Facades\Factory;
 
 /**
- * Wrap
+ * Wrap allows prepending or appending additional content to the original one.
  *
  * Configuration example:
  *

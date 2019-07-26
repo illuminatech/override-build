@@ -2,6 +2,7 @@
 
 namespace Illuminatech\OverrideBuild\Test;
 
+use Illuminate\Config\Repository;
 use Illuminate\Container\Container;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Facade;
@@ -39,8 +40,28 @@ class TestCase extends \PHPUnit\Framework\TestCase
 
         $this->app->singleton(FactoryContract::class, Factory::class);
 
+        $this->app->singleton('config', Repository::class);
+
         $this->app->singleton('files', function () {
             return new Filesystem;
         });
+    }
+
+    /**
+     * Invokes object method, even if it is private or protected.
+     *
+     * @param  object  $object object.
+     * @param  string  $method method name.
+     * @param  array  $args method arguments
+     * @return mixed method result
+     */
+    protected function invoke($object, $method, array $args = [])
+    {
+        $classReflection = new \ReflectionClass(get_class($object));
+        $methodReflection = $classReflection->getMethod($method);
+        $methodReflection->setAccessible(true);
+        $result = $methodReflection->invokeArgs($object, $args);
+        $methodReflection->setAccessible(false);
+        return $result;
     }
 }

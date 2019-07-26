@@ -41,3 +41,16 @@ Usage
 This extension allows re-building materials from 3rd party libraries with patch.
 It might be in handy in case you are using some extension, which is shipped with already compiled JavaScript files, which
 you need to modify and thus re-compile. For example: extensions for 3rd party CMS like [Nova](https://nova.laravel.com/).
+
+
+## Application configuration <span id="application-configuration"></span>
+
+This extension uses [illuminatech/array-factory](https://github.com/illuminatech/array-factory) for configuration.
+Make sure you are familiar with 'array factory' concept before configuring this extension.
+Configuration is stored at 'config/override-build.php' file.
+
+You can publish predefined configuration file using following console command:
+
+```
+php artisan vendor:publish --provider="Illuminatech\OverrideBuild\OverrideBuildServiceProvider" --tag=config
+```

@@ -11,7 +11,7 @@ use Illuminatech\OverrideBuild\PatchContract;
 use Illuminatech\ArrayFactory\Facades\Factory;
 
 /**
- * Replace
+ * Replace allows replacing particular set of strings.
  *
  * Configuration example:
  *

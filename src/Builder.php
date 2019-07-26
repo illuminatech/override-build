@@ -81,6 +81,8 @@ class Builder
     }
 
     /**
+     * @see \Illuminatech\OverrideBuild\PatchContract
+     *
      * @param  array|PatchContract[]  $patches in format: `[filename1 => Patch1, filename2 => [Patch1, Patch2]]`
      * @return static self reference.
      */
@@ -168,6 +170,9 @@ class Builder
         }
     }
 
+    /**
+     * Applies patches specified via {@see setPatches()} to the files to be built.
+     */
     public function patchFiles()
     {
         foreach ($this->getPatches() as $filename => $patches) {
@@ -184,6 +189,9 @@ class Builder
         }
     }
 
+    /**
+     * Performs actual materials build inside {@see buildPath} according to {@see buildCommand}.
+     */
     public function build()
     {
         $commands = array_merge(

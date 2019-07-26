@@ -11,7 +11,7 @@ use Illuminatech\OverrideBuild\PatchContract;
 use Illuminatech\ArrayFactory\Facades\Factory;
 
 /**
- * Json
+ * Json allows modification of the JSON content.
  *
  * Configuration example:
  *

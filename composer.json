@@ -20,6 +20,7 @@
         "illuminatech/array-factory": "~1.1.0"
     },
     "require-dev": {
+        "illuminate/config": "^5.8",
         "illuminate/container": "^5.8",
         "phpunit/phpunit": "^7.5|^8.0"
     },

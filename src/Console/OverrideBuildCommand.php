@@ -30,6 +30,9 @@ class OverrideBuildCommand extends Command
      */
     protected $description = 'Re-building materials from 3rd party libraries with patch';
 
+    /**
+     * Builds specified package.
+     */
     public function handle()
     {
         $package = $this->argument('package');
