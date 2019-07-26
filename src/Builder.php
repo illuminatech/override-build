@@ -113,8 +113,15 @@ class Builder
         return $this;
     }
 
+    /**
+     * Copies files from {@see srcPath} to {@see buildPath}.
+     */
     public function prepareFiles()
     {
+        if (realpath($this->buildPath) === realpath($this->srcPath)) {
+            return;
+        }
+
         if (! file_exists($this->buildPath)) {
             File::makeDirectory($this->buildPath, 0775, true);
         }
@@ -122,14 +129,12 @@ class Builder
         $srcNames = [];
 
         if (empty($this->srcFiles)) {
-            foreach (Finder::create()->ignoreVCS(true)->in($this->srcPath)->depth(0) as $file) {
+            foreach (Finder::create()->ignoreVCS(true)->ignoreDotFiles(false)->in($this->srcPath)->depth(0) as $file) {
                 /* @var $file \Symfony\Component\Finder\SplFileInfo */
                 $srcNames[] = $file->getFilename();
             }
         } else {
-            foreach ($this->srcFiles as $name) {
-                $srcNames[] = $this->srcPath . DIRECTORY_SEPARATOR . $name;
-            }
+            $srcNames = $this->srcFiles;
         }
 
         foreach ($srcNames as $name) {
@@ -143,15 +148,18 @@ class Builder
         }
     }
 
+    /**
+     * Copies all files from {@see overridePath} into {@see buildPath} overriding existing ones.
+     */
     public function overrideFiles()
     {
         if (empty($this->overridePath)) {
             return;
         }
 
-        foreach (Finder::create()->files()->ignoreVCS(true)->in($this->srcPath) as $file) {
+        foreach (Finder::create()->files()->ignoreVCS(true)->ignoreDotFiles(false)->in($this->overridePath) as $file) {
             /* @var $file \Symfony\Component\Finder\SplFileInfo */
-            $relativePath = trim(substr($file->getPathname(), strlen($this->srcPath)), '/\\');
+            $relativePath = trim(substr($file->getPathname(), strlen($this->overridePath)), '/\\');
             $dstFileName = $this->buildPath.DIRECTORY_SEPARATOR.$relativePath;
             if (file_exists($dstFileName)) {
                 unlink($dstFileName);
