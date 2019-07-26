@@ -9,7 +9,7 @@ class WrapTest extends TestCase
 {
     public function testPatch()
     {
-        $patch = new Wrap('Begin {{INHERITED}} End');
+        $patch = new Wrap(['template' => 'Begin {{INHERITED}} End']);
 
         $result = $patch->patch('Middle');
         $this->assertSame('Begin Middle End', $result);
@@ -17,7 +17,10 @@ class WrapTest extends TestCase
 
     public function testPatchCustomPlaceholder()
     {
-        $patch = new Wrap('Begin <content> End', '<content>');
+        $patch = new Wrap([
+            'template' => 'Begin <content> End',
+            'placeholder' => '<content>',
+        ]);
 
         $result = $patch->patch('Middle');
         $this->assertSame('Begin Middle End', $result);

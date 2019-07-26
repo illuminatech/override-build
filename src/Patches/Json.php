@@ -8,16 +8,20 @@
 namespace Illuminatech\OverrideBuild\Patches;
 
 use Illuminatech\OverrideBuild\PatchContract;
+use Illuminatech\ArrayFactory\Facades\Factory;
 
 /**
  * Json
  *
+ * Configuration example:
+ *
  * ```php
- * new Json([
- *     'dependencies' => [
+ * [
+ *     '__class' => Illuminatech\OverrideBuild\Patches\Json::class,
+ *     'data' => [
  *         'foo' => '1.0.0'
  *     ],
- * ])
+ * ]
  * ```
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
@@ -26,25 +30,23 @@ use Illuminatech\OverrideBuild\PatchContract;
 class Json implements PatchContract
 {
     /**
-     * @var array
+     * @var array data to be merged into original one.
      */
-    private $data;
+    public $data = [];
 
     /**
      * @var bool whether to use recursive merging.
      */
-    private $recursive = true;
+    public $recursive = true;
 
     /**
      * Constructor.
      *
-     * @param  array  $data data to be merged into original one.
-     * @param  bool  $recursivewhether to use recursive merging for the data.
+     * @param  array  $config 'array factory' compatible configuration.
      */
-    public function __construct(array $data, bool $recursive = true)
+    public function __construct(array $config = [])
     {
-        $this->data = $data;
-        $this->recursive = $recursive;
+        Factory::configure($this, $config);
     }
 
     /**

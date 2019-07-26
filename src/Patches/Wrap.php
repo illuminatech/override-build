@@ -8,12 +8,18 @@
 namespace Illuminatech\OverrideBuild\Patches;
 
 use Illuminatech\OverrideBuild\PatchContract;
+use Illuminatech\ArrayFactory\Facades\Factory;
 
 /**
  * Wrap
  *
+ * Configuration example:
+ *
  * ```php
- * new Wrap("Line before origin\n{{INHERITED}}\nLine after origin");
+ * [
+ *     '__class' => Illuminatech\OverrideBuild\Patches\Wrap::class,
+ *     'template' => "Line before origin\n{{INHERITED}}\nLine after origin",
+ * ]
  * ```
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
@@ -21,23 +27,25 @@ use Illuminatech\OverrideBuild\PatchContract;
  */
 class Wrap implements PatchContract
 {
-    private $template;
+    /**
+     * @var string template for the wrapping.
+     * It should content {@see placeholder} value.
+     */
+    public $template;
 
-    private $placeholder = '{{INHERITED}}';
+    /**
+     * @var string placeholder, which should mark original content in {@see template}
+     */
+    public $placeholder = '{{INHERITED}}';
 
     /**
      * Constructor.
      *
-     * @param  string  $template
-     * @param  string|null  $placeholder
+     * @param  array  $config 'array factory' compatible configuration.
      */
-    public function __construct(string $template, ?string $placeholder = null)
+    public function __construct(array $config = [])
     {
-        $this->template = $template;
-
-        if (isset($placeholder)) {
-            $this->placeholder = $placeholder;
-        }
+        Factory::configure($this, $config);
     }
 
     /**

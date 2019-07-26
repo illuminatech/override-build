@@ -19,8 +19,10 @@ class JsonTest extends TestCase
 JSON;
 
         $patch = new Json([
-            'dependencies' => [
-                'new' => '2.0.0',
+            'data' => [
+                'dependencies' => [
+                    'new' => '2.0.0',
+                ],
             ],
         ]);
 
@@ -40,10 +42,13 @@ JSON;
 JSON;
 
         $patch = new Json([
-            'dependencies' => [
-                'new' => '2.0.0',
+            'data' => [
+                'dependencies' => [
+                    'new' => '2.0.0',
+                ],
             ],
-        ], false);
+            'recursive' => false,
+        ]);
 
         $result = $patch->patch($sourceJson);
         $this->assertStringContainsString('"new": "2.0.0"', $result);

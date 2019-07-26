@@ -5,6 +5,8 @@ namespace Illuminatech\OverrideBuild\Test;
 use Illuminate\Container\Container;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Facade;
+use Illuminatech\ArrayFactory\Factory;
+use Illuminatech\ArrayFactory\FactoryContract;
 
 /**
  * Base class for the test cases.
@@ -34,6 +36,8 @@ class TestCase extends \PHPUnit\Framework\TestCase
         $this->app = Container::getInstance();
 
         Facade::setFacadeApplication($this->app);
+
+        $this->app->singleton(FactoryContract::class, Factory::class);
 
         $this->app->singleton('files', function () {
             return new Filesystem;

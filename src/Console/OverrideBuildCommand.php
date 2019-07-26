@@ -8,26 +8,35 @@
 namespace Illuminatech\OverrideBuild\Console;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Config;
 use Illuminatech\OverrideBuild\Builder;
 use Illuminatech\ArrayFactory\Facades\Factory;
 
+/**
+ * OverrideBuildCommand
+ *
+ * @author Paul Klimov <klimov.paul@gmail.com>
+ * @since 1.0
+ */
 class OverrideBuildCommand extends Command
 {
     /**
      * {@inheritdoc}
      */
-    protected $signature = 'override-build';
+    protected $signature = 'override-build {package}';
 
     /**
      * {@inheritdoc}
      */
-    protected $description = 'Build custom assets for Nova Froala editor field';
+    protected $description = 'Re-building materials from 3rd party libraries with patch';
 
     public function handle()
     {
-        $builder = $this->createBuilder();
+        $package = $this->argument('package');
 
-        $this->info('Building override...');
+        $builder = $this->createBuilder($package);
+
+        $this->info('Building "'.$package.'"...');
 
         $this->info('Prepare source files...');
         $builder->prepareFiles();
@@ -45,22 +54,34 @@ class OverrideBuildCommand extends Command
     }
 
     /**
-     * @return Builder
+     * Creates builder for the specified package name.
+     *
+     * @param  string  $package package name.
+     * @return Builder package builder instance.
      */
-    protected function createBuilder()
+    protected function createBuilder(string $package)
     {
+        $packagesConfig = $this->packagesConfig();
+
+        if (! isset($packagesConfig[$package])) {
+            throw new \InvalidArgumentException("Package '{$package}' is undefined.");
+        }
+
         $config = array_merge(
             [
                 '__class' => Builder::class,
             ],
-            $this->builderConfig()
+            $packagesConfig[$package]
         );
 
         return Factory::make($config);
     }
 
-    protected function builderConfig(): array
+    /**
+     * @return array configuration for available packages.
+     */
+    protected function packagesConfig(): array
     {
-        return [];
+        return Config::get('override-build.packages', []);
     }
 }

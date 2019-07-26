@@ -8,14 +8,20 @@
 namespace Illuminatech\OverrideBuild\Patches;
 
 use Illuminatech\OverrideBuild\PatchContract;
+use Illuminatech\ArrayFactory\Facades\Factory;
 
 /**
  * Replace
  *
+ * Configuration example:
+ *
  * ```php
- * new Replace([
- *     "import Editor from 'original-editor';" => "import Editor from 'override-editor';",
- * ])
+ * [
+ *     '__class' => Illuminatech\OverrideBuild\Patches\Replace::class,
+ *     'replaces' => [
+ *         "import Editor from 'original-editor';" => "import Editor from 'override-editor';",
+ *     ],
+ * ]
  * ```
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
@@ -26,16 +32,16 @@ class Replace implements PatchContract
     /**
      * @var array list of content replaces.
      */
-    private $replaces;
+    public $replaces;
 
     /**
      * Constructor.
      *
-     * @param  array  $replaces list of content replaces in format: `[search => replace]`.
+     * @param  array  $config 'array factory' compatible configuration.
      */
-    public function __construct(array $replaces)
+    public function __construct(array $config = [])
     {
-        $this->replaces = $replaces;
+        Factory::configure($this, $config);
     }
 
     /**
