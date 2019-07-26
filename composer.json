@@ -1,0 +1,41 @@
+{
+    "name": "illuminatech/override-build",
+    "description": "Allows re-building materials from 3rd party libraries with patch",
+    "keywords": ["laravel", "materials", "assets", "build", "patch", "override", "compile"],
+    "license": "BSD-3-Clause",
+    "support": {
+        "issues": "https://github.com/illuminatech/override-build/issues",
+        "wiki": "https://github.com/illuminatech/override-build/wiki",
+        "source": "https://github.com/illuminatech/override-build"
+    },
+    "authors": [
+        {
+            "name": "Paul Klimov",
+            "email": "klimov.paul@gmail.com"
+        }
+    ],
+    "require": {
+        "illuminate/console": "^5.8",
+        "illuminate/filesystem": "^5.8",
+        "illuminatech/array-factory": "~1.1.0"
+    },
+    "require-dev": {
+        "illuminate/container": "^5.8",
+        "phpunit/phpunit": "^7.5|^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Illuminatech\\OverrideBuild\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Illuminatech\\OverrideBuild\\Test\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
