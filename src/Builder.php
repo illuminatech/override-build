@@ -12,7 +12,19 @@ use Symfony\Component\Finder\Finder;
 use Illuminatech\ArrayFactory\Facades\Factory;
 
 /**
- * Builder
+ * Builder performs re-building of the particular external package.
+ *
+ * Building sequence example:
+ *
+ * ```php
+ * $builder = new Builder();
+ * // configuration goes here
+ * $builder->prepareFiles();
+ * $builder->overrideFiles();
+ * $builder->patchFiles();
+ * $builder->build();
+ * $builder->cleanupFiles();
+ * ```
  *
  * @see \Illuminatech\OverrideBuild\Console\OverrideBuildCommand
  *
@@ -82,12 +94,12 @@ class Builder
     public $cleanupFiles = [];
 
     /**
-     * @var array|PatchContract[][]
+     * @var array|PatchContract[][] list of file patches in format: `[filename => [Patch1, Patch2, ...]]`.
      */
     private $patches = [];
 
     /**
-     * @return PatchContract[][] list of patches in format: `[filename => [Patch1, Patch2, ...]]`
+     * @return PatchContract[][] list of file patches in format: `[filename => [Patch1, Patch2, ...]]`.
      */
     public function getPatches(): array
     {
@@ -97,7 +109,7 @@ class Builder
     /**
      * @see \Illuminatech\OverrideBuild\PatchContract
      *
-     * @param  array|PatchContract[]  $patches in format: `[filename1 => Patch1, filename2 => [Patch1, Patch2]]`
+     * @param  array|PatchContract[]  $patches in format: `[filename1 => Patch1, filename2 => [Patch1, Patch2]]`.
      * @return static self reference.
      */
     public function setPatches(array $patches): self

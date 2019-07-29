@@ -39,7 +39,7 @@ Usage
 -----
 
 This extension allows re-building materials from 3rd party libraries with patch.
-It might be in handy in case you are using some extension, which is shipped with already compiled JavaScript files, which
+It might be in handy while using some extension, which is shipped with already compiled JavaScript files, which
 you need to modify and thus re-compile. For example: extensions for 3rd party CMS like [Nova](https://nova.laravel.com/).
 
 We can take [froala/nova-froala-field](https://github.com/froala/nova-froala-field) for example. This package is shipped with
@@ -47,10 +47,10 @@ JavaScript WYSIWYG editor integrated into VueJS component, which are compiled al
 In case you need to apply [custom plugin](https://www.froala.com/wysiwyg-editor/docs/concepts/custom/button) to the editor, it becomes
 impossible unless you re-compile the extension with your own changes.
 
-At this stage it might be tempting to simply adjust source files inside "vendor/froala/nova-froala-field" directory and run
-NPM build from there. However any manual changes inside the vendor directory will cause you problems in the future.
+At this stage it might be tempting to simply adjust source files inside 'vendor/froala/nova-froala-field' directory and run
+NPM build from there. However any manual changes inside the 'vendor' directory will cause you problems in the future.
 The patch you create in this way can not be tracked by VCS and you will have to re-apply it in case you update the library.
-Also any changes made to the files in "vendor" directory may cause Composer fail on "install" or "update" command.
+Also any changes made to the files in "vendor" directory may cause Composer fail on 'install' or 'update' command.
 
 This package was created to solve the problem. It allows creating new build (compilation) from particular source files under
 the different path. This task is performed in following steps:
@@ -122,12 +122,39 @@ package name from the configuration as an argument, specifying which package sho
 php artisan override-build nova-froala-field
 ```
 
+**Heads up!** Remember that this extension will not reconfigure the built package in the way it will use new compiled files.
+You will have to manually adjust configuration of extension you modifying yourself. For the 'Nova Froala field' example you
+should adjsut your `\App\Providers\NovaServiceProvider` in following way:
+
+```php
+<?php
+
+namespace App\Providers;
+
+use Laravel\Nova\Nova;
+use Laravel\Nova\Events\ServingNova;
+use Laravel\Nova\NovaApplicationServiceProvider;
+
+class NovaServiceProvider extends NovaApplicationServiceProvider
+{
+    public function boot()
+    {
+        parent::boot();
+
+        Nova::serving(function (ServingNova $event) {
+            // override original JS for 'nova-froala-field'
+            Nova::script('nova-froala-field', storage_path('build-override/nova-froala-field/dist/js/field.js'));
+        });
+    }
+}
+```
+
 
 ## Overriding files <span id="overriding-files"></span>
 
 You would not need to re-build some package without making any modifications to its source. The easiest way to do so is using
 the 'override' directory. It should repeat the structure of the source directory containing only those files, which should be 
-appended or replaced. In our example for the 'Froala Nova field' the source directory has the following structure:
+appended or replaced. In our example for the 'Nova Froala field' the source directory has the following structure:
 
 ```
 config/
@@ -202,7 +229,7 @@ Nova.booting(Vue => {
 
 While complete overriding of the source file is the most simple way to apply your modifications, it has some significant drawbacks.
 You will need to copy all original file content into the override and then make your modification, even if changes a single line of code.
-In case source library upgrades it may change the file you have overridden in the way build ends with an error with your version.
+In case source library upgrades, it may change the file, which you have overridden, in the way build ends with an error with your version.
 In order to make your changes more persistent `\Illuminatech\OverrideBuild\Builder::$patches` has been created.
 Each patch is a PHP object matching `\Illuminatech\OverrideBuild\PatchContract`, which modifies file content.
 Following pre-defined patches are available:
@@ -215,7 +242,7 @@ Following pre-defined patches are available:
  
 Please refer to the particular patch class for more details.
 
-For our 'Froala' example we can simply patch 'resources/js/field.js' adding an extra line with `require('./custom-plugins');` instead
+For our 'Nova Froala field' example we can simply patch 'resources/js/field.js', adding an extra line with `require('./custom-plugins');` instead
 of rewriting it as whole.
 
 ```php
@@ -241,7 +268,7 @@ return [
 
 ## Build optimization <span id="build-optimization"></span>
 
-In order to speed up the building process 'override-build' checks whether package build already exist before making new one.
+In order to speed up the building process, 'override-build' checks whether package build already exist before making new one.
 If build exists and its files modification date is later then modification date of files from 'source' and 'override' directories -
 no new build will be started.
 You may enforce build re-creation using `--force` flag for the command invocation. For example:
@@ -254,7 +281,7 @@ php artisan override-build nova-froala-field --force
 ## Cleanup files <span id="cleanup-files"></span>
 
 During the building some accessory files, which you may not want to keep, might be generated.
-Like during our 'Froala Nova field' example building, 'node_modules' directory created with all NPM dependencies stored inside of it.
+Like during our 'Nova Froala field' example building, 'node_modules' directory created with all NPM dependencies stored inside of it.
 In order to simplify project structure and save disk space you can setup `\Illuminatech\OverrideBuild\Builder::$cleanupFiles`, listing
 files and directories, which should be removed after build is complete. For example:
 
