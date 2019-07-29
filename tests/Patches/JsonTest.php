@@ -28,6 +28,8 @@ JSON;
 
         $result = $patch->patch($sourceJson);
         $this->assertStringContainsString('"new": "2.0.0"', $result);
+        $this->assertStringContainsString('"foo": "1.0.0"', $result);
+        $this->assertStringContainsString('"bar": "1.0.0"', $result);
     }
 
     public function testPatchNonRecursive()

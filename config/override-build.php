@@ -29,6 +29,10 @@ return [
                     'template' => "{{INHERITED}}\n\nrequire('./custom-plugins');",
                 ],
             ],
+            'buildCommand' => [
+                'yarn install',
+                'yarn run prod',
+            ],
         ],
     ],
 ];
