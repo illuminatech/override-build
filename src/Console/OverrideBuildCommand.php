@@ -15,6 +15,8 @@ use Illuminatech\ArrayFactory\Facades\Factory;
 /**
  * OverrideBuildCommand
  *
+ * @see \Illuminatech\OverrideBuild\Builder
+ *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
  */
@@ -52,6 +54,10 @@ class OverrideBuildCommand extends Command
 
         $this->info('Making build...');
         $builder->build();
+
+        $this->info('Cleaning up...');
+        $builder->cleanupFiles();
+        $this->info('...done.');
 
         $this->info('...complete.');
     }

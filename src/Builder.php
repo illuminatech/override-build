@@ -14,6 +14,8 @@ use Illuminatech\ArrayFactory\Facades\Factory;
 /**
  * Builder
  *
+ * @see \Illuminatech\OverrideBuild\Console\OverrideBuildCommand
+ *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
  */
@@ -26,7 +28,7 @@ class Builder
     public $srcPath;
 
     /**
-     * @var iterable|string[] list of files, which should be taken from {@see srcPath}.
+     * @var iterable|string[] list of files/directories, which should be taken from {@see srcPath}.
      * If not set - all files will be copied.
      * For example:
      *
@@ -66,6 +68,18 @@ class Builder
      * ```
      */
     public $buildCommand;
+
+    /**
+     * @var iterable|string[] list of files/directories, which should be removed from {@see buildPath} once build is complete.
+     * For example:
+     *
+     * ```
+     * [
+     *     'node-modules',
+     * ]
+     * ```
+     */
+    public $cleanupFiles = [];
 
     /**
      * @var array|PatchContract[][]
@@ -140,8 +154,8 @@ class Builder
         }
 
         foreach ($srcNames as $name) {
-            $srcName = $this->srcPath . DIRECTORY_SEPARATOR . $name;
-            $dstName = $this->buildPath . DIRECTORY_SEPARATOR . $name;
+            $srcName = $this->srcPath.DIRECTORY_SEPARATOR.$name;
+            $dstName = $this->buildPath.DIRECTORY_SEPARATOR.$name;
             if (is_dir($srcName)) {
                 File::copyDirectory($srcName, $dstName);
             } else {
@@ -200,5 +214,20 @@ class Builder
         );
 
         passthru('('.implode('; ', $commands).')');
+    }
+
+    /**
+     * Removes files specified via {@see cleanupFiles} from {@see buildPath}.
+     */
+    public function cleanupFiles()
+    {
+        foreach ($this->cleanupFiles as $name) {
+            $fileName = $this->buildPath.DIRECTORY_SEPARATOR.$name;
+            if (is_dir($fileName)) {
+                File::deleteDirectory($fileName);
+            } else {
+                unlink($fileName);
+            }
+        }
     }
 }

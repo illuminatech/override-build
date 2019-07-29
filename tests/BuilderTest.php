@@ -148,4 +148,22 @@ class BuilderTest extends TestCase
         $patchedContent = file_get_contents($this->builder->buildPath.'/resources/js/app.js');
         $this->assertStringContainsString('#patch-replace', $patchedContent);
     }
+
+    /**
+     * @depends testPrepareFiles
+     */
+    public function testCleanupFiles()
+    {
+        $this->builder->prepareFiles();
+
+        $this->builder->cleanupFiles = [
+            'resources',
+            '.babelrc',
+        ];
+        $this->builder->cleanupFiles();
+
+        $this->assertFileExists($this->builder->buildPath.'/package.json');
+        $this->assertFileNotExists($this->builder->buildPath.'/resources');
+        $this->assertFileNotExists($this->builder->buildPath.'/.babelrc');
+    }
 }
