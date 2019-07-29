@@ -94,6 +94,13 @@ class Builder
     public $cleanupFiles = [];
 
     /**
+     * @var int the permission to be set for newly created directories.
+     * Defaults to 0775, meaning the directory is read-writable by owner and group,
+     * but read-only for other users.
+     */
+    public $dirMode = 0775;
+
+    /**
      * @var array|PatchContract[][] list of file patches in format: `[filename => [Patch1, Patch2, ...]]`.
      */
     private $patches = [];
@@ -151,7 +158,7 @@ class Builder
         }
 
         if (! file_exists($this->buildPath)) {
-            File::makeDirectory($this->buildPath, 0775, true);
+            File::makeDirectory($this->buildPath, $this->dirMode, true);
         }
 
         $srcNames = [];
@@ -192,6 +199,12 @@ class Builder
             if (file_exists($dstFileName)) {
                 unlink($dstFileName);
             }
+
+            $dstDirName = dirname($dstFileName);
+            if (! is_dir($dstDirName)) {
+                File::makeDirectory($dstDirName, $this->dirMode, true);
+            }
+
             File::copy($file->getPathname(), $dstFileName);
         }
     }
