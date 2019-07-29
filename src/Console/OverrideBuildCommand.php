@@ -10,10 +10,11 @@ namespace Illuminatech\OverrideBuild\Console;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
 use Illuminatech\OverrideBuild\Builder;
+use Illuminate\Console\ConfirmableTrait;
 use Illuminatech\ArrayFactory\Facades\Factory;
 
 /**
- * OverrideBuildCommand
+ * OverrideBuildCommand re-builds materials from 3rd party libraries with patch.
  *
  * @see \Illuminatech\OverrideBuild\Builder
  *
@@ -22,15 +23,18 @@ use Illuminatech\ArrayFactory\Facades\Factory;
  */
 class OverrideBuildCommand extends Command
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected $signature = 'override-build {package}';
+    use ConfirmableTrait;
 
     /**
      * {@inheritdoc}
      */
-    protected $description = 'Re-building materials from 3rd party libraries with patch';
+    protected $signature = 'override-build {package}
+                    {--force : Force the operation to run even if existing up-to-date build is detected}';
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $description = 'Re-builds materials from 3rd party libraries with patch.';
 
     /**
      * Builds specified package.
@@ -40,6 +44,13 @@ class OverrideBuildCommand extends Command
         $package = $this->argument('package');
 
         $builder = $this->createBuilder($package);
+
+        $confirmCallback = function () use ($builder) {
+            return $builder->isBuildActual();
+        };
+        if (! $this->confirmToProceed('Build for "'.$package.'" is already up-to-date. Do you wish to overwrite it?', $confirmCallback)) {
+            return;
+        }
 
         $this->info('Building "'.$package.'"...');
 

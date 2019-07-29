@@ -230,4 +230,44 @@ class Builder
             }
         }
     }
+
+    /**
+     * @return bool whether current build at {@see buildPath} is actual or outdated.
+     */
+    public function isBuildActual(): bool
+    {
+        if (! file_exists($this->buildPath)) {
+            return false;
+        }
+
+        $srcModificationTime = $this->findDirectoryModificationTime($this->srcPath);
+        if (! empty($this->overridePath)) {
+            $srcModificationTime = max($srcModificationTime, $this->findDirectoryModificationTime($this->overridePath));
+        }
+
+        $buildModificationTime = $this->findDirectoryModificationTime($this->buildPath);
+
+        return $buildModificationTime > $srcModificationTime;
+    }
+
+    /**
+     * Finds the last modification time of the directory.
+     *
+     * @param  string  $path directory to be evaluated.
+     * @return int last modification timestamp.
+     */
+    private function findDirectoryModificationTime(string $path): int
+    {
+        $lastModificationTime = 0;
+        foreach (Finder::create()->files()->ignoreVCS(true)->ignoreDotFiles(false)->in($path) as $file) {
+            /* @var $file \Symfony\Component\Finder\SplFileInfo */
+            $fileMTime = $file->getMTime();
+
+            if ($fileMTime > $lastModificationTime) {
+                $lastModificationTime = $fileMTime;
+            }
+        }
+
+        return $lastModificationTime;
+    }
 }

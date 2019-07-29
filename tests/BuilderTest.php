@@ -166,4 +166,20 @@ class BuilderTest extends TestCase
         $this->assertFileNotExists($this->builder->buildPath.'/resources');
         $this->assertFileNotExists($this->builder->buildPath.'/.babelrc');
     }
+
+    /**
+     * @depends testPrepareFiles
+     */
+    public function testIsBuildActual()
+    {
+        $this->assertFalse($this->builder->isBuildActual());
+
+        $this->builder->prepareFiles();
+
+        $this->assertTrue($this->builder->isBuildActual());
+
+        touch($this->builder->srcPath.'/package.json');
+
+        $this->assertFalse($this->builder->isBuildActual());
+    }
 }

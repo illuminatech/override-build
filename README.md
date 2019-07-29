@@ -237,3 +237,39 @@ return [
     ],
 ];
 ```
+
+
+## Build optimization <span id="build-optimization"></span>
+
+In order to speed up the building process 'override-build' checks whether package build already exist before making new one.
+If build exists and its files modification date is later then modification date of files from 'source' and 'override' directories -
+no new build will be started.
+You may enforce build re-creation using `--force` flag for the command invocation. For example:
+
+```
+php artisan override-build nova-froala-field --force
+```
+
+
+## Cleanup files <span id="cleanup-files"></span>
+
+During the building some accessory files, which you may not want to keep, might be generated.
+Like during our 'Froala Nova field' example building, 'node_modules' directory created with all NPM dependencies stored inside of it.
+In order to simplify project structure and save disk space you can setup `\Illuminatech\OverrideBuild\Builder::$cleanupFiles`, listing
+files and directories, which should be removed after build is complete. For example:
+
+```php
+<?php
+
+return [
+    'packages' => [
+        'nova-froala-field' => [
+            // ...
+            'cleanupFiles' => [
+                'node_modules',
+                'yarn.lock',
+            ],
+        ],
+    ],
+];
+```
