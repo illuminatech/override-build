@@ -38,10 +38,6 @@ class OverrideBuildServiceProvider extends ServiceProvider
      */
     protected function registerPublications(): void
     {
-        if (! $this->app->runningInConsole()) {
-            return;
-        }
-
         $this->publishes([
             __DIR__ . '/../config/override-build.php' => $this->app->make('path.config').DIRECTORY_SEPARATOR.'override-build.php',
         ], 'config');
