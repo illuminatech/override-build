@@ -15,13 +15,13 @@
         }
     ],
     "require": {
-        "illuminate/console": "^5.8",
-        "illuminate/filesystem": "^5.8",
-        "illuminatech/array-factory": "~1.1.0"
+        "illuminate/console": "^6.0",
+        "illuminate/filesystem": "^6.0",
+        "illuminatech/array-factory": "^1.2.0"
     },
     "require-dev": {
-        "illuminate/config": "^5.8",
-        "illuminate/container": "^5.8",
+        "illuminate/config": "^6.0",
+        "illuminate/container": "^6.0",
         "phpunit/phpunit": "^7.5|^8.0"
     },
     "autoload": {
