@@ -32,7 +32,52 @@ return [
             ],
             'buildCommand' => [
                 'yarn install',
-                'yarn run prod',
+                'yarn run '.((env('APP_ENV') === 'production') ? 'prod' : 'dev'),
+            ],
+        ],
+        /*
+         * Allow running Nova at domain sub-folder {@see https://github.com/laravel/nova-issues/issues/471}
+         */
+        'nova' => [
+            'srcPath' => base_path('vendor/laravel/nova'),
+            'buildPath' => storage_path('build-override/nova'),
+            'srcFiles' => [
+                'resources',
+                '.babelrc',
+                'mix-manifest.json',
+                'package.json',
+                'tailwind.js',
+                'webpack.mix.js.dist',
+                'yarn.lock',
+            ],
+            'patches' => [
+                'resources/js/util/axios.js' => [
+                    '__class' => Illuminatech\OverrideBuild\Patches\Replace::class,
+                    'replaces' => [
+                        'axios.create()' => "axios.create({baseURL: 'http://test.devel/subfolder'})"
+                    ],
+                ],
+                'webpack.mix.js.dist' => [
+                    '__class' => Illuminatech\OverrideBuild\Patches\Replace::class,
+                    'replaces' => [
+                        ".copy('public', '../nova-app/public/vendor/nova')" => ".copy('public', '../../public/vendor/nova')",
+                    ],
+                ],
+                'resources/views/layout.blade.php' => [
+                    '__class' => Illuminatech\OverrideBuild\Patches\Replace::class,
+                    'replaces' => [
+                        '"/nova-api/' => '"/subfolder/nova-api/',
+                        "mix('app.css', 'vendor/nova')" => "asset(mix('app.css', 'vendor/nova'))",
+                        "mix('manifest.js', 'vendor/nova')" => "asset(mix('manifest.js', 'vendor/nova'))",
+                        "mix('vendor.js', 'vendor/nova')" => "asset(mix('vendor.js', 'vendor/nova'))",
+                        "mix('app.js', 'vendor/nova')" => "asset(mix('app.js', 'vendor/nova'))",
+                        '@json(Nova::jsonVariables(request()));' => "@json(Nova::jsonVariables(request()));\nwindow.config.base = '/subfolder' + window.config.base;"
+                    ],
+                ],
+            ],
+            'buildCommand' => [
+                'yarn install',
+                'yarn run '.((env('APP_ENV') === 'production') ? 'prod' : 'dev'),
             ],
         ],
     ],
