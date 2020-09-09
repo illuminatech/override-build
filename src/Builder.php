@@ -8,8 +8,8 @@
 namespace Illuminatech\OverrideBuild;
 
 use Illuminate\Support\Facades\File;
-use Symfony\Component\Finder\Finder;
 use Illuminatech\ArrayFactory\Facades\Factory;
+use Symfony\Component\Finder\Finder;
 
 /**
  * Builder performs re-building of the particular external package.
@@ -165,7 +165,7 @@ class Builder
 
         if (empty($this->srcFiles)) {
             foreach (Finder::create()->ignoreVCS(true)->ignoreDotFiles(false)->in($this->srcPath)->depth(0) as $file) {
-                /* @var $file \Symfony\Component\Finder\SplFileInfo */
+                /** @var $file \Symfony\Component\Finder\SplFileInfo */
                 $srcNames[] = $file->getFilename();
             }
         } else {
@@ -193,7 +193,7 @@ class Builder
         }
 
         foreach (Finder::create()->files()->ignoreVCS(true)->ignoreDotFiles(false)->in($this->overridePath) as $file) {
-            /* @var $file \Symfony\Component\Finder\SplFileInfo */
+            /** @var $file \Symfony\Component\Finder\SplFileInfo */
             $relativePath = trim(substr($file->getPathname(), strlen($this->overridePath)), '/\\');
             $dstFileName = $this->buildPath.DIRECTORY_SEPARATOR.$relativePath;
             if (file_exists($dstFileName)) {
@@ -285,7 +285,7 @@ class Builder
     {
         $lastModificationTime = 0;
         foreach (Finder::create()->files()->ignoreVCS(true)->ignoreDotFiles(false)->in($path) as $file) {
-            /* @var $file \Symfony\Component\Finder\SplFileInfo */
+            /** @var $file \Symfony\Component\Finder\SplFileInfo */
             $fileMTime = $file->getMTime();
 
             if ($fileMTime > $lastModificationTime) {

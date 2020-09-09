@@ -1,6 +1,12 @@
 Laravel Materials Build Override
 ================================
 
+1.1.2 Under Development
+-----------------------
+
+- Enh: Added support for "illuminate/console" 8.0 (klimov-paul)
+
+
 1.1.1, March 4, 2020
 --------------------
 

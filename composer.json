@@ -15,14 +15,14 @@
         }
     ],
     "require": {
-        "illuminate/console": "^6.0 || ^7.0",
-        "illuminate/filesystem": "^6.0 || ^7.0",
-        "illuminatech/array-factory": "^1.2.1"
+        "illuminate/console": "^6.0 || ^7.0 || ^8.0",
+        "illuminate/filesystem": "^6.0 || ^7.0 || ^8.0",
+        "illuminatech/array-factory": "^1.2.2"
     },
     "require-dev": {
-        "illuminate/config": "^6.0 || ^7.0",
-        "illuminate/container": "^6.0 || ^7.0",
-        "phpunit/phpunit": "^7.5 || ^8.0"
+        "illuminate/config": "*",
+        "illuminate/container": "*",
+        "phpunit/phpunit": "^7.5 || ^8.0 || ^9.3"
     },
     "autoload": {
         "psr-4": {

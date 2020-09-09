@@ -2,8 +2,8 @@
 
 namespace Illuminatech\OverrideBuild\Test\Patches;
 
-use Illuminatech\OverrideBuild\Test\TestCase;
 use Illuminatech\OverrideBuild\Patches\Replace;
+use Illuminatech\OverrideBuild\Test\TestCase;
 
 class ReplaceTest extends TestCase
 {

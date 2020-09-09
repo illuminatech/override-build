@@ -8,10 +8,10 @@
 namespace Illuminatech\OverrideBuild\Console;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Config;
-use Illuminatech\OverrideBuild\Builder;
 use Illuminate\Console\ConfirmableTrait;
+use Illuminate\Support\Facades\Config;
 use Illuminatech\ArrayFactory\Facades\Factory;
+use Illuminatech\OverrideBuild\Builder;
 
 /**
  * OverrideBuildCommand re-builds materials from 3rd party libraries with patch.

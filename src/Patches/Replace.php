@@ -7,8 +7,8 @@
 
 namespace Illuminatech\OverrideBuild\Patches;
 
-use Illuminatech\OverrideBuild\PatchContract;
 use Illuminatech\ArrayFactory\Facades\Factory;
+use Illuminatech\OverrideBuild\PatchContract;
 
 /**
  * Replace allows replacing particular set of strings.

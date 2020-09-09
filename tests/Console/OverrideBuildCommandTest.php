@@ -4,8 +4,8 @@ namespace Illuminatech\OverrideBuild\Test\Console;
 
 use Illuminate\Support\Facades\Config;
 use Illuminatech\OverrideBuild\Builder;
-use Illuminatech\OverrideBuild\Test\TestCase;
 use Illuminatech\OverrideBuild\Console\OverrideBuildCommand;
+use Illuminatech\OverrideBuild\Test\TestCase;
 
 class OverrideBuildCommandTest extends TestCase
 {
@@ -19,7 +19,7 @@ class OverrideBuildCommandTest extends TestCase
             ],
         ]);
 
-        /* @var $builder Builder */
+        /** @var $builder Builder */
         $builder = $this->invoke($command, 'createBuilder', ['test-package']);
 
         $this->assertTrue($builder instanceof Builder);

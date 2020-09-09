@@ -2,9 +2,9 @@
 
 namespace Illuminatech\OverrideBuild\Test;
 
-use Illuminate\Support\Facades\File;
 use Illuminatech\OverrideBuild\Builder;
 use Illuminatech\OverrideBuild\Patches\Replace;
+use Illuminate\Support\Facades\File;
 
 class BuilderTest extends TestCase
 {
@@ -61,7 +61,7 @@ class BuilderTest extends TestCase
         $this->assertFileExists($this->builder->buildPath.'/.babelrc');
         $this->assertFileExists($this->builder->buildPath.'/resources/js/app.js');
 
-        $this->assertFileNotExists($this->builder->buildPath.'/package.json');
+        $this->assertFileDoesNotExist($this->builder->buildPath.'/package.json');
     }
 
     /**
@@ -87,7 +87,7 @@ class BuilderTest extends TestCase
         $this->builder->buildCommand = 'rm -f package.json';
         $this->builder->build();
 
-        $this->assertFileNotExists($this->builder->buildPath.'/package.json');
+        $this->assertFileDoesNotExist($this->builder->buildPath.'/package.json');
     }
 
     /**
@@ -103,8 +103,8 @@ class BuilderTest extends TestCase
         ];
         $this->builder->build();
 
-        $this->assertFileNotExists($this->builder->buildPath.'/package.json');
-        $this->assertFileNotExists($this->builder->buildPath.'/.babelrc');
+        $this->assertFileDoesNotExist($this->builder->buildPath.'/package.json');
+        $this->assertFileDoesNotExist($this->builder->buildPath.'/.babelrc');
     }
 
     public function testSetupPatches()
@@ -163,8 +163,8 @@ class BuilderTest extends TestCase
         $this->builder->cleanupFiles();
 
         $this->assertFileExists($this->builder->buildPath.'/package.json');
-        $this->assertFileNotExists($this->builder->buildPath.'/resources');
-        $this->assertFileNotExists($this->builder->buildPath.'/.babelrc');
+        $this->assertFileDoesNotExist($this->builder->buildPath.'/resources');
+        $this->assertFileDoesNotExist($this->builder->buildPath.'/.babelrc');
     }
 
     /**

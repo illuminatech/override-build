@@ -58,10 +58,28 @@ class TestCase extends \PHPUnit\Framework\TestCase
     protected function invoke($object, $method, array $args = [])
     {
         $classReflection = new \ReflectionClass(get_class($object));
+
         $methodReflection = $classReflection->getMethod($method);
         $methodReflection->setAccessible(true);
         $result = $methodReflection->invokeArgs($object, $args);
         $methodReflection->setAccessible(false);
+
         return $result;
+    }
+
+    /**
+     * Asserts that a file does not exist.
+     *
+     * Keeps BC with PHPUnit <= 9.3
+     */
+    public static function assertFileDoesNotExist(string $filename, string $message = ''): void
+    {
+        if (method_exists(get_parent_class(), 'assertFileDoesNotExist')) {
+            parent::assertFileDoesNotExist($filename, $message);
+
+            return;
+        }
+
+        static::assertFileNotExists($filename, $message);
     }
 }

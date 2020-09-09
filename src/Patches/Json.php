@@ -7,8 +7,8 @@
 
 namespace Illuminatech\OverrideBuild\Patches;
 
-use Illuminatech\OverrideBuild\PatchContract;
 use Illuminatech\ArrayFactory\Facades\Factory;
+use Illuminatech\OverrideBuild\PatchContract;
 
 /**
  * Json allows modification of the JSON content.
