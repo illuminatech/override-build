@@ -12,7 +12,7 @@ For license information check the [LICENSE](LICENSE.md)-file.
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/illuminatech/override-build.svg)](https://packagist.org/packages/illuminatech/override-build)
 [![Total Downloads](https://img.shields.io/packagist/dt/illuminatech/override-build.svg)](https://packagist.org/packages/illuminatech/override-build)
-[![Build Status](https://travis-ci.org/illuminatech/override-build.svg?branch=master)](https://travis-ci.org/illuminatech/override-build)
+[![Build Status](https://github.com/illuminatech/override-build/workflows/build/badge.svg)](https://github.com/illuminatech/override-build/actions)
 
 
 Installation
